@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet var titleLabel: UILabel!
+    lazy var pokemonManager = PokemonManager()
     
     @IBOutlet var buttons: UIButton!
     
@@ -20,9 +21,19 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        pokemonManager.fetchPokemon()
         // Do any additional setup after loading the view.
     }
-
-
 }
 
+extension ViewController: PokemonManagerDelegate {
+    func didUpdatePokemon(pokemons: [PokemonModel]) {
+        print(pokemons)
+    }
+    
+    func didFailWithError(error: any Error) {
+        print(error)
+    }
+    
+    
+}
