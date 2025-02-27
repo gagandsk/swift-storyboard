@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     @IBOutlet var pokemonImage: UIImageView!
     
     lazy var pokemonManager = PokemonManager()
+    lazy var imageManager = ImageManager()
     
     var random4Pokemon: [PokemonModel] = []
     var correctAnswer: String = ""
@@ -27,7 +28,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        //aqui, cuando hacemos un 'delegate' le estamos pasando el 'control'
         pokemonManager.delegate = self
+        imageManager.delegate = self
+        
         pokemonManager.fetchPokemon()
         // Do any additional setup after loading the view.
     }
@@ -41,12 +45,24 @@ extension ViewController: PokemonManagerDelegate {
         let imageData = random4Pokemon[index].imageUrl
         correctAnswer = random4Pokemon[index].name
         
-        //imageManager.fetchImage(url: imageData)
+        imageManager.fetchImage(url: imageData)
     }
     
     func didFailWithError(error: any Error) {
         print(error)
     }
+}
+
+extension ViewController: ImageManagerDelegate {
+    func didUpdateImage(image: ImageModel) {
+        print(image.imageURL)
+    }
+    
+    func didFailWithErrorImage(error: any Error) {
+        print(error)
+    }
+    
+    
 }
 
 extension Collection where Indices.Iterator.Element == Index {
