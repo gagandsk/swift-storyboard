@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     
     lazy var pokemonManager = PokemonManager()
     lazy var imageManager = ImageManager()
+    lazy var game = GameModel()
     
     var random4Pokemon: [PokemonModel] = []
     var correctAnswer: String = ""
@@ -31,6 +32,8 @@ class ViewController: UIViewController {
         //aqui, cuando hacemos un 'delegate' le estamos pasando el 'control'
         pokemonManager.delegate = self
         imageManager.delegate = self
+       
+        print(game.getScore())
         
         pokemonManager.fetchPokemon()
         // Do any additional setup after loading the view.
