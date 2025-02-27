@@ -10,7 +10,13 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var pokemonImage: UIImageView!
+    
     lazy var pokemonManager = PokemonManager()
+    
+    var random4Pokemon: [PokemonModel] = []
+    var correctAnswer: String = ""
+    var correctAnswerImage: String = ""
     
     @IBOutlet var buttons: UIButton!
     
@@ -21,6 +27,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        pokemonManager.delegate = self
         pokemonManager.fetchPokemon()
         // Do any additional setup after loading the view.
     }
@@ -28,12 +35,29 @@ class ViewController: UIViewController {
 
 extension ViewController: PokemonManagerDelegate {
     func didUpdatePokemon(pokemons: [PokemonModel]) {
-        print(pokemons)
+        random4Pokemon = pokemons.choose(4)
+        
+        let index = Int.random(in: 0...3)
+        let imageData = random4Pokemon[index].imageUrl
+        correctAnswer = random4Pokemon[index].name
+        
+        //imageManager.fetchImage(url: imageData)
     }
     
     func didFailWithError(error: any Error) {
         print(error)
     }
-    
-    
+}
+
+extension Collection where Indices.Iterator.Element == Index {
+    public subscript(safe index: Index) -> Iterator.Element? {
+        return (startIndex <= index && index < endIndex) ? self[index] : nil
+    }
+}
+
+
+extension Collection {
+    func choose(_ n: Int) -> Array<Element> {
+        Array(shuffled().prefix(n))
+    }
 }
